@@ -1,0 +1,29 @@
+Package: GEMini
+Title: Generating Equivalent Models
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Shawn", middle = NA, family = "Yee",
+    "s6yee@uwaterloo.ca", role = c("aut", "cre"),
+    comment = c(ORCID = "0009-0006-7791-4179"))
+Description: Automated generation of equivalent models in structural 
+  equation modelling (SEM). Provide your model via lavaan syntax and receive
+  in-depth information regarding all equivalent models generated
+  (Lee and Hershberger, 1990).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
+Imports: 
+    fastmap,
+    magrittr,
+    stringr,
+    tibble,
+    tidyr,
+    utils
+Depends:
+    dplyr,
+    lavaan,
+    R (>= 4.1.0)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
