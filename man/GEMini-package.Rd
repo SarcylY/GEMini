@@ -8,6 +8,14 @@
 \description{
 Automated generation of equivalent models in structural equation modelling (SEM). Provide your model via lavaan syntax and receive in-depth information regarding all equivalent models generated (Lee and Hershberger, 1990).
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/SarcylY/GEMini}
+  \item Report bugs at \url{https://github.com/SarcylY/GEMini/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Shawn Yee \email{s6yee@uwaterloo.ca} (\href{https://orcid.org/0009-0006-7791-4179}{ORCID})
 
