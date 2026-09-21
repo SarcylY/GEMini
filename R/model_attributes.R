@@ -176,3 +176,58 @@ ante_conse <- function(permute_df, model_index) {
     )
   )
 }
+
+#' @export
+#' @title Network Mapping of Equivalent Models
+#' @description
+#' `network_matrix` receives the output of [GEMini::equiv_gen()] or [GEMini::equiv_trim()] and creates a matrix representing the connectedness between all equivalent models. R package [qgraph](https://www.jstatsoft.org/article/view/v048i04) is required to graph the resultant weights matrix.
+#' @param equiv_list Output of `equiv_gen()` or `equiv_trim()`, containing a list of equivalent models
+#' @param directed Whether the resultant weights matrix codes unidirectional edges as -1 and bidirectional edges as +1. FALSE by default.
+#' @param name_labels Whether the column names of the result weights matrix will be each model's model name. FALSE by default, where Model 1 is always the user-specified model. Setting this to TRUE with longer model names may cause readability issues in qgraph.
+#' @returns matrix representing connectedness of all equivalent models in `equiv_list`.
+network_matrix <- function(equiv_list, directed = FALSE, name_labels = FALSE) {
+
+  #if package 'qgraph' does not exist, warn user
+  if (!requireNamespace("qgraph", quietly = T)) {
+    warning("Package qgraph is not installed! Make sure it is installed to properly plot the resultant weights matrix.")
+  }
+
+  #store equivalent model names
+  equiv_model_names <- names(equiv_list$equiv_models)
+
+  #initialize adjacency dataframe
+  adj_df <- data.frame()
+  #for each model...
+  for (model_info in equiv_list$equiv_models) {
+
+    #generate models associated with 1 run of step_gen
+    one_step <- step_gen(permute_df = equiv_list$permut_df,
+                         model_info = model_info)
+
+    #for each model that we know to be equivalent (equiv_model_names), can they be found in one_step (i.e., reached within 1 step of generation)?
+    edge_vec <- as.numeric(equiv_model_names %in% names(one_step))
+
+    #attach (rowwise) to adjacency dataframe
+    adj_df <- rbind(adj_df, edge_vec)
+  }
+
+  #convert adjacency df to matrix
+  adj_mat <- as.matrix(adj_df) %>% unname(.)
+  #change all diagonals to 0 (we don't need to know a model maps to itself)
+  diag(adj_mat) <- 0
+
+  #if differentiation between uni/bidirectional relationships are specified...
+  if (directed) {
+    #output modified adjacency matrix
+    adj_mat <- adj_mat*((adj_mat + t(adj_mat)) %% 2)*-2 + adj_mat
+  }
+
+  #if model name labels are requested...
+  if (name_labels) {
+    #add in colnames
+    colnames(adj_mat) <- equiv_model_names
+  }
+
+  #return final adjacency matrix
+  return(adj_mat)
+}

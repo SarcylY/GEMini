@@ -2,6 +2,7 @@
 
 export(equiv_gen)
 export(equiv_trim)
+export(network_matrix)
 export(param_summary)
 import(dplyr)
 import(lavaan)

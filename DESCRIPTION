@@ -25,6 +25,7 @@ Depends:
     lavaan,
     R (>= 4.1.0)
 Suggests: 
+    qgraph,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://github.com/SarcylY/GEMini
